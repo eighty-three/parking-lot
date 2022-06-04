@@ -90,7 +90,11 @@ export const useCarsStore = create<TCarsStore>((set, get) => ({
       ),
     });
 
-    console.log(`Payment: ${payment}, Total hours: ${time - car.start!}, Previous payment: ${lastPayment}`);
+    console.log(
+      `Car: ${car.licensePlateNum}, Payment: ${payment}, Total hours: ${
+        time - car.start!
+      }, Previous payment: ${lastPayment}`,
+    );
     // return payment
   },
 }));
