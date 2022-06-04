@@ -3,7 +3,7 @@ import type { NextPage } from 'next';
 import { nanoid } from 'nanoid';
 
 import styles from '@/styles/Home.module.scss';
-import { useCarsStore, useParkingLotStore, useEntriesMapStore, useEntriesStore } from '@/store';
+import { useCarsStore, useParkingLotStore, useEntriesMapStore, useEntriesStore, useParkingSlotsStore } from '@/store';
 import { TCarSize } from '@/types';
 import { Car, Coordinate, Time } from '@/components';
 import { generateGrid, getKeyFromCoords, shuffle, isBoundary, isEdge } from '@/lib';
@@ -14,11 +14,21 @@ const Grid = () => {
   const dimensions = useParkingLotStore((state) => state.dimensions);
 
   useEffect(() => {
-    const arr = shuffle(layout)
+    const entries = shuffle(layout)
       .filter((coords) => isBoundary(coords, dimensions) && !isEdge(coords, dimensions))
       .slice(0, MIN_ENTRIES);
-    useEntriesStore.getState().setInitialEntries(arr);
-    useEntriesMapStore.getState().setInitialEntriesMap(arr);
+    useEntriesStore.getState().setInitialEntries(entries);
+    useEntriesMapStore.getState().setInitialEntriesMap(entries);
+
+    const slots = layout
+      .filter((coords) => !isBoundary(coords, dimensions))
+      .map((coords) => ({
+        size: Math.floor(Math.random() * 3) as TCarSize,
+        ID: nanoid(5),
+        parkedCar: null,
+        coordinates: { ...coords },
+      }));
+    useParkingSlotsStore.getState().setParkingSlots(slots);
   }, [layout]);
 
   const BASE_WIDTH = 150;
@@ -56,14 +66,16 @@ const Cars = () => {
   const cars = useCarsStore((state) => state.cars);
   return (
     <div style={{ width: '500px', marginTop: '20px' }}>
-      {cars.map((car) => (
-        <Car
-          key={car.licensePlateNum}
-          licensePlateNum={car.licensePlateNum}
-          isParked={!!car.parkingSlotID}
-          size={car.size}
-        />
-      ))}
+      {cars
+        .filter((car) => !car.parkingSlotID)
+        .map((car) => (
+          <Car
+            key={car.licensePlateNum}
+            licensePlateNum={car.licensePlateNum}
+            isParked={!!car.parkingSlotID}
+            size={car.size}
+          />
+        ))}
     </div>
   );
 };

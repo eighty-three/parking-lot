@@ -1,6 +1,6 @@
 import { ICoordinates } from '@/types';
 import { useParkingLotStore } from '@/store';
-import { Entry } from '@/components';
+import { Entry, ParkingSlot } from '@/components';
 import { isEdge, isBoundary } from '@/lib';
 
 export const Coordinate = (props: { coords: ICoordinates }) => {
@@ -14,6 +14,5 @@ export const Coordinate = (props: { coords: ICoordinates }) => {
     return <Entry coords={coords} />;
   }
 
-  return <></>;
-  //return <ParkingSlot coords={coords} />;
+  return <ParkingSlot coords={coords} />;
 };

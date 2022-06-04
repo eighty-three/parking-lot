@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import { useCarsStore } from '@/store';
 import { TCarSize } from '@/types';
@@ -15,20 +15,9 @@ export const Car = React.memo((props: { licensePlateNum: string; isParked: boole
     useCarsStore.getState().unparkCar(licensePlateNum);
   }, []);
 
-  const sizeText = useMemo(() => {
-    switch (size) {
-      case 0:
-        return 'small';
-      case 1:
-        return 'medium';
-      case 2:
-        return 'large';
-    }
-  }, [size]);
-
   return (
     <div>
-      {`${licensePlateNum} || ${sizeText} ||`}
+      {`${licensePlateNum} || ${size} ||`}
       {!isParked ? (
         <>
           <ParkButton licensePlateNum={licensePlateNum} />

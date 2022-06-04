@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 
 import { useEntriesStore, useCarsStore } from '@/store';
 import { getKeyFromCoords } from '@/lib';
@@ -13,10 +13,15 @@ interface EntriesModalProps {
 export const EntriesModal = (props: EntriesModalProps) => {
   const { onClose, licensePlateNum } = props;
   const entries = useEntriesStore((state) => state.entries);
+  const [isFull, setIsFull] = useState(false);
 
   const parkCar = useCallback(
     (licensePlateNum: string, entry: ICoordinates) => {
-      useCarsStore.getState().parkCar(licensePlateNum, entry);
+      const hasSlot = useCarsStore.getState().parkCar(licensePlateNum, entry);
+      if (!hasSlot) {
+        setIsFull(true);
+        return;
+      }
       onClose();
     },
     [onClose],
@@ -27,6 +32,7 @@ export const EntriesModal = (props: EntriesModalProps) => {
       <div onClick={onClose} className={modalStyles.modal} />
 
       <div className={modalStyles.container}>
+        {isFull && 'Parking Lot is full'}
         <div style={{ height: '100%' }}>
           {entries.map((entry) => (
             <button

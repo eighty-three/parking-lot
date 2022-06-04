@@ -1,6 +1,6 @@
 import create from 'zustand';
 
-import { ICar, ICoordinates } from '@/types';
+import { ICar, ICoordinates, TCarSize } from '@/types';
 import { calculatePayment, findParkingSlot } from '@/lib';
 import { useTimeStore, useParkingSlotsStore } from '@/store';
 
@@ -8,7 +8,7 @@ type TCarsStore = {
   cars: ICar[];
   addCar: (car: ICar) => void;
   removeCar: (licensePlateNum: string) => void;
-  parkCar: (licensePlateNum: string, entry: ICoordinates) => void;
+  parkCar: (licensePlateNum: string, entry: ICoordinates) => boolean;
   unparkCar: (licensePlateNum: string) => void;
 };
 
@@ -49,6 +49,7 @@ export const useCarsStore = create<TCarsStore>((set, get) => ({
           : { ...car },
       ),
     });
+    return true;
   },
   unparkCar: (licensePlateNum: string) => {
     const time = useTimeStore.getState().time;
@@ -60,8 +61,9 @@ export const useCarsStore = create<TCarsStore>((set, get) => ({
     const slot = slots.find((slot) => slot.parkedCar === licensePlateNum)!;
     const prevSlot = slots.find((slot) => slot.ID === car.prevParkingSlotID);
 
-    const rate = 20 + slot.size * 40;
-    const prevRate = prevSlot ? 20 + prevSlot.size * 40 : 0;
+    const getRate = (size: TCarSize) => 20 + size * 40;
+    const rate = getRate(slot.size);
+    const prevRate = prevSlot ? getRate(prevSlot.size) : 0;
 
     const lastPayment = car.lastPayment ?? 0;
     let prevHours = car.end || 0 - car.start!;
@@ -85,5 +87,8 @@ export const useCarsStore = create<TCarsStore>((set, get) => ({
           : { ...car },
       ),
     });
+
+    console.log(`Payment: ${payment}, Total hours: ${time - car.start!}, Previous payment: ${lastPayment}`);
+    // return payment
   },
 }));
