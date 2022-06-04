@@ -5,3 +5,15 @@ export interface ICar {
   start?: number;
   end?: number;
 }
+
+export interface IParkingSlot {
+  size: TCarSize;
+  parkedCar: string | null;
+  coordinates: ICoordinates;
+  ID: string;
+}
+
+export interface ICoordinates {
+  row: number;
+  col: number;
+}
