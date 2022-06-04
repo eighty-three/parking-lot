@@ -1,11 +1,11 @@
 import create from 'zustand';
 
-import { IParkingSlot } from '@/types';
+import { IParkingSlot, IParkedCar } from '@/types';
 
 type TParkingSlotsStore = {
   parkingSlots: IParkingSlot[];
   setParkingSlots: (parkingSlots: IParkingSlot[]) => void;
-  updateParkingSlot: (ID: string, parkedCar: string | null) => void;
+  updateParkingSlot: (ID: string, parkedCar: IParkedCar | null) => void;
 };
 
 export const useParkingSlotsStore = create<TParkingSlotsStore>((set, get) => ({

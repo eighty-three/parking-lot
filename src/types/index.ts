@@ -9,9 +9,13 @@ export interface ICar {
   lastPayment?: number;
 }
 
+export interface IParkedCar {
+  licensePlateNum: string;
+  size: TCarSize;
+}
 export interface IParkingSlot {
   size: TCarSize;
-  parkedCar: string | null;
+  parkedCar: IParkedCar | null;
   coordinates: ICoordinates;
   ID: string;
 }

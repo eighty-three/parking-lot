@@ -41,7 +41,7 @@ export const useCarsStore = create<TCarsStore>((set, get) => ({
       lastPayment = car.lastPayment ?? 0;
     }
 
-    useParkingSlotsStore.getState().updateParkingSlot(slot.ID, licensePlateNum);
+    useParkingSlotsStore.getState().updateParkingSlot(slot.ID, { licensePlateNum, size: car.size });
     set({
       cars: cars.map((car) =>
         car.licensePlateNum === licensePlateNum
@@ -58,7 +58,7 @@ export const useCarsStore = create<TCarsStore>((set, get) => ({
     const car = cars.find((car) => car.licensePlateNum === licensePlateNum)!;
 
     const slots = useParkingSlotsStore.getState().parkingSlots;
-    const slot = slots.find((slot) => slot.parkedCar === licensePlateNum)!;
+    const slot = slots.find((slot) => slot.parkedCar?.licensePlateNum === licensePlateNum)!;
     const prevSlot = slots.find((slot) => slot.ID === car.prevParkingSlotID);
 
     const getRate = (size: TCarSize) => 20 + size * 40;
