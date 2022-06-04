@@ -1,19 +1,23 @@
-import { useCallback } from 'react';
+import React, { useCallback } from 'react';
 import type { NextPage } from 'next';
 import { nanoid } from 'nanoid';
 
 import styles from '@/styles/Home.module.scss';
-
-import { Time, Car } from '@/components';
-import { TCarSize } from '@/types';
 import { useCarsStore } from '@/store';
+import { TCarSize } from '@/types';
+import { Car, Time } from '@/components';
 
 const Cars = () => {
   const cars = useCarsStore((state) => state.cars);
   return (
     <div>
       {cars.map((car) => (
-        <Car key={car.licensePlateNum} licensePlateNum={car.licensePlateNum} size={car.size} />
+        <Car
+          key={car.licensePlateNum}
+          licensePlateNum={car.licensePlateNum}
+          isParked={!!car.parkingSlotID}
+          size={car.size}
+        />
       ))}
     </div>
   );
@@ -23,7 +27,7 @@ const CreateCars = () => {
   const createCar = useCallback((num?: TCarSize) => {
     const size = num ?? (Math.floor(Math.random() * 3) as TCarSize);
     const licensePlateNum = nanoid(8);
-    useCarsStore.getState().addCar({ size, licensePlateNum });
+    useCarsStore.getState().addCar({ size, licensePlateNum, parkingSlotID: null });
   }, []);
 
   return (

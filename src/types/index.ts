@@ -4,6 +4,9 @@ export interface ICar {
   licensePlateNum: string;
   start?: number;
   end?: number;
+  parkingSlotID: string | null;
+  prevParkingSlotID?: string | null;
+  lastPayment?: number;
 }
 
 export interface IParkingSlot {
