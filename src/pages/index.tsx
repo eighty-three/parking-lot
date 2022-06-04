@@ -31,8 +31,8 @@ const Grid = () => {
     useParkingSlotsStore.getState().setParkingSlots(slots);
   }, [layout]);
 
-  const BASE_WIDTH = 150;
-  const BASE_HEIGHT = 150;
+  const BASE_WIDTH = 120;
+  const BASE_HEIGHT = 120;
 
   return (
     <div

@@ -16,15 +16,15 @@
 .container {
   display: flex;
   flex-direction: column;
-  position: absolute;
   z-index: 999;
+  position: absolute;
 
-  margin: auto;
-  left: 0;
-  right: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 
-  height: 80%;
-  width: 80%;
+  height: 60%;
+  width: 60%;
   padding: 0.25em;
 
   background-color: white;

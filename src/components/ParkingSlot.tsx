@@ -19,12 +19,17 @@ export const ParkingSlot = React.memo((props: { coords: ICoordinates }) => {
         justifyContent: 'center',
         flexDirection: 'column',
         height: '100%',
+        background: slot?.parkedCar ? '#ff6b6b' : '#cac4c4',
       }}
     >
       {`${key} || ${slot?.size}`}
-      <hr />
-      {slot?.parkedCar?.licensePlateNum && (
-        <Car licensePlateNum={slot.parkedCar.licensePlateNum} isParked={true} size={slot.parkedCar.size} />
+      {slot?.parkedCar && (
+        <Car
+          licensePlateNum={slot.parkedCar.licensePlateNum}
+          isParked={true}
+          size={slot.parkedCar.size}
+          inParkingSlot
+        />
       )}
     </div>
   );
