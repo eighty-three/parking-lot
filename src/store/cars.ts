@@ -52,7 +52,8 @@ export const useCarsStore = create<TCarsStore>((set, get) => ({
     return true;
   },
   unparkCar: (licensePlateNum: string) => {
-    const time = useTimeStore.getState().time;
+    const currentTime = useTimeStore.getState().time;
+    const time = currentTime + 0.25; // 15 mins to unpark;
 
     const cars = get().cars;
     const car = cars.find((car) => car.licensePlateNum === licensePlateNum)!;
@@ -73,6 +74,7 @@ export const useCarsStore = create<TCarsStore>((set, get) => ({
     }
     const payment = calculatePayment(time, car.start!, rate, lastPayment, prevHours, prevRate);
 
+    useTimeStore.getState().addTime(0.25);
     useParkingSlotsStore.getState().updateParkingSlot(slot.ID, null);
     set({
       cars: cars.map((car) =>
