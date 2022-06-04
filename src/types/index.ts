@@ -20,3 +20,12 @@ export interface ICoordinates {
   row: number;
   col: number;
 }
+
+export interface WithChildren {
+  children: React.ReactNode;
+}
+
+export interface IDimensions {
+  rows: number;
+  cols: number;
+}
